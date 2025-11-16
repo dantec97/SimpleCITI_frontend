@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import LoginPage from './components/LoginPage';
+import DocumentList from './components/DocumentList';
+import DocumentUpload from './components/DocumentUpload';
+import AdminAuditLogs from './components/AdminAuditLogs';
+import MfaSetup from './components/MfaSetup';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [mfaEnabled, setMfaEnabled] = useState(
+    localStorage.getItem('mfa_enabled') === 'true'
+  );
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  function handleLogin(token, mfa_enabled) {
+    setToken(token);
+    setMfaEnabled(mfa_enabled);
+    localStorage.setItem('token', token);
+    localStorage.setItem('mfa_enabled', mfa_enabled);
+    // Optionally, fetch user profile to check admin status
+    // setIsAdmin(...);
+  }
+
+  function handleLogout() {
+    setToken(null);
+    setMfaEnabled(false);
+    localStorage.removeItem('token');
+    localStorage.removeItem('mfa_enabled');
+  }
+
+  if (!token) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
+  if (!mfaEnabled) {
+    return (
+      <div>
+        <button onClick={handleLogout}>Logout</button>
+        <MfaSetup token={token} onMfaEnabled={() => setMfaEnabled(true)} />
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <button onClick={handleLogout}>Logout</button>
+      <DocumentUpload token={token} onUpload={() => {}} />
+      <DocumentList token={token} />
+      {isAdmin && <AdminAuditLogs token={token} />}
+    </div>
+  );
 }
 
-export default App
+export default App;
