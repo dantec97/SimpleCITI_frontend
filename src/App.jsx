@@ -11,25 +11,40 @@ function App() {
     localStorage.getItem('mfa_enabled') === 'true'
   );
   const [isAdmin, setIsAdmin] = useState(false);
+  const [needsMfaSetup, setNeedsMfaSetup] = useState(false);
+  const [docRefresh, setDocRefresh] = useState(0);
 
   function handleLogin(token, mfa_enabled) {
     setToken(token);
     setMfaEnabled(mfa_enabled);
     localStorage.setItem('token', token);
     localStorage.setItem('mfa_enabled', mfa_enabled);
-    // Optionally, fetch user profile to check admin status
-    // setIsAdmin(...);
+    setNeedsMfaSetup(false);
   }
 
   function handleLogout() {
     setToken(null);
     setMfaEnabled(false);
+    setNeedsMfaSetup(false);
     localStorage.removeItem('token');
     localStorage.removeItem('mfa_enabled');
   }
 
-  if (!token) {
-    return <LoginPage onLogin={handleLogin} />;
+  function handleMfaSetup(/* username, token */) {
+    setNeedsMfaSetup(true);
+  }
+
+  if (!token && !needsMfaSetup) {
+    return <LoginPage onLogin={handleLogin} onMfaSetup={handleMfaSetup} />;
+  }
+
+  if (needsMfaSetup && token) {
+    return (
+      <div>
+        <button onClick={handleLogout}>Logout</button>
+        <MfaSetup token={token} onMfaEnabled={() => setMfaEnabled(true)} />
+      </div>
+    );
   }
 
   if (!mfaEnabled) {
@@ -44,8 +59,8 @@ function App() {
   return (
     <div>
       <button onClick={handleLogout}>Logout</button>
-      <DocumentUpload token={token} onUpload={() => {}} />
-      <DocumentList token={token} />
+      <DocumentUpload token={token} onUpload={() => setDocRefresh(r => r + 1)} />
+      <DocumentList token={token} refresh={docRefresh} />
       {isAdmin && <AdminAuditLogs token={token} />}
     </div>
   );

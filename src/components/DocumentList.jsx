@@ -2,12 +2,12 @@
 import { useEffect, useState } from 'react';
 import { listDocuments } from '../api/api';
 
-export default function DocumentList({ token }) {
+export default function DocumentList({ token, refresh }) {
   const [docs, setDocs] = useState([]);
 
   useEffect(() => {
     listDocuments(token).then(setDocs);
-  }, [token]);
+  }, [token, refresh]); // add refresh here
 
   return (
     <div>
