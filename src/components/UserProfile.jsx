@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { disableMfa } from '../api/api';
+import "../Styles/Styles.css";
 
 export default function UserProfile({ token, onClose, onMfaDisabled }) {
   const [mfaCode, setMfaCode] = useState('');
@@ -28,42 +29,19 @@ export default function UserProfile({ token, onClose, onMfaDisabled }) {
   }
 
   return (
-    <div style={{ 
-      position: 'fixed', 
-      top: '50%', 
-      left: '50%', 
-      transform: 'translate(-50%, -50%)',
-      background: 'white', 
-      border: '2px solid #ccc', 
-      padding: '20px', 
-      borderRadius: '8px',
-      minWidth: '400px',
-      zIndex: 1000
-    }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-        <h3>User Profile Settings</h3>
-        <button onClick={onClose} style={{ background: 'red', color: 'white', border: 'none', borderRadius: '4px', padding: '5px 10px' }}>×</button>
-      </div>
-      
+    <div className="si-modal">
+      <button className="si-modal-close" onClick={onClose}>×</button>
+      <h3 className="si-section-title">User Profile Settings</h3>
       <div style={{ marginBottom: '20px' }}>
         <h4>Disable MFA</h4>
         <p>Enter your current MFA code to disable multi-factor authentication:</p>
         <form onSubmit={handleDisableMfa}>
-          <input 
-            placeholder="MFA Code" 
-            value={mfaCode} 
-            onChange={e => setMfaCode(e.target.value)} 
-            required 
-            style={{ marginRight: '10px', padding: '8px' }}
-          />
-          <button type="submit" style={{ padding: '8px 16px', background: '#dc3545', color: 'white', border: 'none', borderRadius: '4px' }}>
-            Disable MFA
-          </button>
+          <input className="si-input" placeholder="MFA Code" value={mfaCode} onChange={e => setMfaCode(e.target.value)} required />
+          <button className="si-btn" type="submit" style={{marginTop: 8}}>Disable MFA</button>
         </form>
       </div>
-      
-      {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
-      {success && <div style={{ color: 'green', marginBottom: '10px' }}>{success}</div>}
+      {error && <div className="si-error">{error}</div>}
+      {success && <div className="si-success">{success}</div>}
     </div>
   );
 }

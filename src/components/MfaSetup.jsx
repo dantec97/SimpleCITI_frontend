@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { setupMfa, verifyMfa } from '../api/api';
+import "../Styles/Styles.css";
 
 export default function MfaSetup({ token, onMfaEnabled }) {
   const [qr, setQr] = useState(null);
@@ -32,13 +33,13 @@ export default function MfaSetup({ token, onMfaEnabled }) {
   }
 
   return (
-    <div>
+    <div className="mfa-setup-container">
       <h2>Set Up MFA</h2>
       {!qr && (
         <button onClick={handleSetup}>Generate QR Code</button>
       )}
       {qr && (
-        <div>
+        <div style={{width: "100%"}}>
           <p>Scan this QR code with your authenticator app:</p>
           <img src={qr} alt="MFA QR Code" style={{ width: 200, height: 200 }} />
           <p>Or enter this secret manually: <b>{secret}</b></p>
@@ -53,8 +54,8 @@ export default function MfaSetup({ token, onMfaEnabled }) {
           </form>
         </div>
       )}
-      {error && <div style={{ color: 'red' }}>{error}</div>}
-      {success && <div style={{ color: 'green' }}>{success}</div>}
+      {error && <div className="si-error">{error}</div>}
+      {success && <div className="si-success">{success}</div>}
     </div>
   );
 }

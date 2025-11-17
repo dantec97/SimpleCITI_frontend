@@ -1,6 +1,7 @@
 // src/components/DocumentUpload.jsx
 import { useState } from 'react';
 import { uploadDocument } from '../api/api';
+import "../Styles/Styles.css";
 
 export default function DocumentUpload({ token, onUpload }) {
   const [file, setFile] = useState(null);
@@ -23,18 +24,18 @@ export default function DocumentUpload({ token, onUpload }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3>Upload Document</h3>
-      <input placeholder="Document Name" value={name} onChange={e => setName(e.target.value)} required />
-      <select value={docType} onChange={e => setDocType(e.target.value)}>
+    <form className="si-container" onSubmit={handleSubmit}>
+      <h3 className="si-section-title">Upload Document</h3>
+      <input className="si-input" placeholder="Document Name" value={name} onChange={e => setName(e.target.value)} required />
+      <select className="si-select" value={docType} onChange={e => setDocType(e.target.value)}>
         <option value="id">ID</option>
         <option value="statement">Statement</option>
         <option value="agreement">Agreement</option>
         <option value="other">Other</option>
       </select>
-      <input type="file" onChange={e => setFile(e.target.files[0])} required />
-      <button type="submit">Upload</button>
-      {success && <div style={{ color: 'green' }}>{success}</div>}
+      <input className="si-input" type="file" onChange={e => setFile(e.target.files[0])} required />
+      <button className="si-btn" type="submit">Upload</button>
+      {success && <div className="si-success">{success}</div>}
     </form>
   );
 }

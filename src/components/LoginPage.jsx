@@ -1,6 +1,8 @@
 // src/components/LoginPage.jsx
 import { useState } from 'react';
 import { loginWithMfa } from '../api/api';
+import "../Styles/Styles.css";
+
 
 export default function LoginPage({ onLogin, onMfaSetup }) {
   const [username, setUsername] = useState('');
@@ -26,7 +28,7 @@ export default function LoginPage({ onLogin, onMfaSetup }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="login-form-container" onSubmit={handleSubmit}>
       <h2>Login</h2>
       <input placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} required />
       <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />

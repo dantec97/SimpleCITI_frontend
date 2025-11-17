@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { getDocumentHistory } from '../api/api';
+import "../Styles/Styles.css";
+
 
 export default function DocumentHistory({ token, docId, docName, onClose }) {
   const [history, setHistory] = useState(null);
@@ -39,43 +41,24 @@ export default function DocumentHistory({ token, docId, docName, onClose }) {
   };
 
   return (
-    <div style={{ 
-      position: 'fixed', 
-      top: '50%', 
-      left: '50%', 
-      transform: 'translate(-50%, -50%)',
-      background: 'white', 
-      border: '2px solid #ccc', 
-      padding: '20px', 
-      borderRadius: '8px',
-      maxWidth: '600px',
-      maxHeight: '400px',
-      overflow: 'auto',
-      zIndex: 1000
-    }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-        <h3>Version History: {docName}</h3>
-        <button onClick={onClose} style={{ background: 'red', color: 'white', border: 'none', borderRadius: '4px', padding: '5px 10px' }}>×</button>
-      </div>
-      
+    <div className="si-modal">
+      <button className="si-modal-close" onClick={onClose}>×</button>
+      <h3 className="si-section-title">Version History: {docName}</h3>
       {loading && <p>Loading history...</p>}
-      
       {history && (
         <div>
           <p>Total versions: {history.total_versions}</p>
-          <ul style={{ listStyle: 'none', padding: 0 }}>
+          <ul className="si-list">
             {history.versions.map(version => (
-              <li key={version.id} style={{ 
-                border: '1px solid #ddd', 
-                margin: '10px 0', 
-                padding: '10px', 
-                borderRadius: '4px' 
-              }}>
-                <strong>Version {version.version}</strong> - {version.doc_type}
-                <br />
-                <small>Uploaded: {new Date(version.uploaded_at).toLocaleString()}</small>
-                <br />
-                <button onClick={() => handleDownloadVersion(version.id)}>Download v{version.version}</button>
+              <li key={version.id} className="si-list-item" style={{flexDirection: 'column', alignItems: 'flex-start'}}>
+                <div>
+                  <strong>Version {version.version}</strong> - {version.doc_type}
+                  <br />
+                  <small>Uploaded: {new Date(version.uploaded_at).toLocaleString()}</small>
+                </div>
+                <button className="si-btn" style={{width: 'auto', marginTop: 8, padding: '7px 18px'}} onClick={() => handleDownloadVersion(version.id)}>
+                  Download v{version.version}
+                </button>
               </li>
             ))}
           </ul>

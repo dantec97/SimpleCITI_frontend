@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { listDocuments } from '../api/api';
 import DocumentHistory from './DocumentHistory';
+import "../Styles/Styles.css";
 
 export default function DocumentList({ token, refresh }) {
   const [docs, setDocs] = useState([]);
@@ -32,42 +33,23 @@ export default function DocumentList({ token, refresh }) {
   };
 
   return (
-    <div>
-      <h2>Your Documents</h2>
-      <ul style={{ listStyle: 'none', padding: 0 }}>
+    <div className="si-container">
+      <h2 className="si-section-title">Your Documents</h2>
+      <ul className="si-list">
         {docs.map(doc => (
-          <li key={doc.id} style={{ 
-            border: '1px solid #ddd', 
-            margin: '10px 0', 
-            padding: '15px', 
-            borderRadius: '8px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
+          <li key={doc.id} className="si-list-item">
             <div>
               <strong>{doc.name}</strong> (v{doc.version}) - {doc.doc_type}
               <br />
               <small>Uploaded: {new Date(doc.uploaded_at).toLocaleString()}</small>
             </div>
             <div>
-              <button
-                onClick={() => handleDownload(doc.id)}
-                style={{ marginRight: '10px', color: '#007bff', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
-              >
-                Download
-              </button>
-              <button 
-                onClick={() => setSelectedDoc(doc)} 
-                style={{ background: '#6c757d', color: 'white', border: 'none', borderRadius: '4px', padding: '5px 10px' }}
-              >
-                History
-              </button>
+              <button className="si-btn" style={{width: 'auto', marginRight: 10, padding: '7px 18px'}} onClick={() => handleDownload(doc.id)}>Download</button>
+              <button className="si-btn" style={{width: 'auto', background: '#282b5c', color: '#fff', padding: '7px 18px'}} onClick={() => setSelectedDoc(doc)}>History</button>
             </div>
           </li>
         ))}
       </ul>
-      
       {selectedDoc && (
         <DocumentHistory 
           token={token} 

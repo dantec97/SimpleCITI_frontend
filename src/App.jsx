@@ -8,6 +8,7 @@ import AdminPanel from './components/AdminPanel';
 import UserProfile from './components/UserProfile';
 import MfaSetup from './components/MfaSetup';
 import { getProfile } from './api/api';
+import './Styles/Styles.css';
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
@@ -86,7 +87,7 @@ function App() {
           borderBottom: '2px solid #007bff',
           paddingBottom: '10px',
         }}>
-          <h1>🔒 SecureInvestor Portal</h1>
+          <h1>Secure-Investor demo</h1>
           <nav style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
             <Link to="/documents" style={{ color: '#007bff', textDecoration: 'none' }}>Documents</Link>
             {isAdmin && <Link to="/admin" style={{ color: '#007bff', textDecoration: 'none' }}>Admin</Link>}
@@ -106,25 +107,26 @@ function App() {
           </nav>
         </header>
 
-        <Routes>
-          <Route path="/" element={<Navigate to="/documents" replace />} />
-          <Route path="/documents" element={
-            <div>
-              <DocumentUpload token={token} onUpload={() => setDocRefresh(r => r + 1)} />
-              <DocumentList token={token} refresh={docRefresh} />
-            </div>
-          } />
-          {isAdmin && <Route path="/admin" element={<AdminPanel token={token} />} />}
-          {isAdmin && <Route path="/audit-logs" element={<AdminAuditLogs token={token} />} />}
-        </Routes>
-
-        {showProfile && (
-          <UserProfile
-            token={token}
-            onClose={() => setShowProfile(false)}
-            onMfaDisabled={handleMfaDisabled}
-          />
-        )}
+        <div className="si-main-center">
+          <Routes>
+            <Route path="/" element={<Navigate to="/documents" replace />} />
+            <Route path="/documents" element={
+              <div>
+                <DocumentUpload token={token} onUpload={() => setDocRefresh(r => r + 1)} />
+                <DocumentList token={token} refresh={docRefresh} />
+              </div>
+            } />
+            {isAdmin && <Route path="/admin" element={<AdminPanel token={token} />} />}
+            {isAdmin && <Route path="/audit-logs" element={<AdminAuditLogs token={token} />} />}
+          </Routes>
+          {showProfile && (
+            <UserProfile
+              token={token}
+              onClose={() => setShowProfile(false)}
+              onMfaDisabled={handleMfaDisabled}
+            />
+          )}
+        </div>
       </div>
     </Router>
   );
