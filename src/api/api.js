@@ -53,3 +53,48 @@ export async function verifyMfa(token, code) {
   });
   return res.json();
 }
+
+export async function getProfile(token) {
+  const res = await fetch(`${API_BASE}/investors/`, {
+    headers: { Authorization: `Token ${token}` },
+  });
+  return res.json();
+}
+
+export async function createUser(token, userData) {
+  const res = await fetch(`${API_BASE}/investors/create_user/`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Token ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(userData),
+  });
+  return res.json();
+}
+
+export async function getDocumentHistory(token, docId) {
+  const res = await fetch(`${API_BASE}/documents/${docId}/history/`, {
+    headers: { Authorization: `Token ${token}` },
+  });
+  return res.json();
+}
+
+export async function getDocumentsByType(token, docType) {
+  const res = await fetch(`${API_BASE}/documents/by-type/${docType}/`, {
+    headers: { Authorization: `Token ${token}` },
+  });
+  return res.json();
+}
+
+export async function disableMfa(token, code) {
+  const res = await fetch(`${API_BASE}/investors/mfa/disable/`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Token ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ code }),
+  });
+  return res.json();
+}
