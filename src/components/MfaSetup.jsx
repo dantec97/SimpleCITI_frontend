@@ -42,7 +42,7 @@ export default function MfaSetup({ token, onMfaEnabled }) {
         <div style={{width: "100%"}}>
           <p>Scan this QR code with your authenticator app:</p>
           <img src={qr} alt="MFA QR Code" style={{ width: 200, height: 200 }} />
-          <p>Or enter this secret manually: <b>{secret}</b></p>
+          {/* <p>Or enter this secret manually: <b>{secret}</b></p> */}
           <form onSubmit={handleVerify}>
             <input
               placeholder="Enter code from app"
